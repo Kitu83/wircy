@@ -2,7 +2,7 @@
 
 let rememberLines = [], irl = -1, tabindexstr = false, tabindex = -1, search = false, count_spaces = false, textval = false;
 let chanc = 0, ccindex, cclen, cccursor, newcursor, hindex = false, hindex_iter, htag;
-let numLines = 0, editbox = '', emojiSearch = '';
+let numLines = 0, editbox = '', emojiSearch = '', alt = false;
 
 let favlist = getCookie('favlist');
 
@@ -261,6 +261,29 @@ let emojiCursor;
 		*/
 	}
 	
+	document.body.onkeyup = function(e) {
+		
+		e.preventDefault()
+		
+		if (e.code === 'AltLeft') {
+			
+			alt = !alt
+			
+			if (alt === true) {
+			
+				bubble2.style.display = 'inline-block';
+				
+				Array.from(document.getElementsByClassName('options')).forEach(closeContentBubble);
+				
+				textarea.focus();
+			}
+			else {
+				
+				bubble2.style.display = 'none';
+			}
+		}
+	}
+	
 	textarea.onkeydown = function(e) {
 		
 		let elem = e.currentTarget;
@@ -279,15 +302,6 @@ let emojiCursor;
 			send();
 			
 			expandTextarea(this);
-		}
-		
-		if (e.code === 'F4') {
-			
-			bubble2.style.display = 'inline-block';
-			
-			Array.from(document.getElementsByClassName('options')).forEach(closeContentBubble);
-			
-			document.getElementById('search_emoji').focus();
 		}
 		
 		// nick and chan completion :
@@ -656,6 +670,8 @@ let emojiCursor;
 	
 	document.body.onclick = function(e) {   //when the document body is clicked
 		
+		alt = false
+		
 		bubble.style.display = 'none';
 		
 		if (window.event) {
@@ -843,13 +859,22 @@ let emojiCursor;
 	
 	btn_emoji.onclick = function(e) {
 		
-		e.stopPropagation();
+		alt = !alt
 		
-		bubble2.style.display = 'inline-block';
-		
-		Array.from(document.getElementsByClassName('options')).forEach(closeContentBubble);
-		
-		document.getElementById('search_emoji').focus();
+		if (alt === true) {
+			
+			e.stopPropagation();
+			
+			bubble2.style.display = 'inline-block';
+			
+			Array.from(document.getElementsByClassName('options')).forEach(closeContentBubble);
+			
+			textarea.focus();
+		}
+		else {
+			
+			bubble2.style.display = 'none';
+		}
 	}
 	
 	document.getElementById('send_options').onmousedown = function(e) {
@@ -894,7 +919,10 @@ let emojiCursor;
 		   }
 		}
 		
-		expandTextarea(textarea);
+		expandTextarea(textarea)
+		
+		textarea.focus()
+		setEndOfContenteditable(node)
 	};
 	
 	let btn_favorites_chans = document.getElementById('btn_favorites_chans');

@@ -1641,11 +1641,7 @@ function join(chan) {
 	
 	if (lo !== false) {
 		
-		channel_window.innerHTML = lo;
-		
-		let w = document.getElementById('chan_' + chanspNoHTML);
-		
-		scrollBottom(w);
+		channel_window.innerHTML = lo
 	}
 	
 	let first_query = document.getElementsByClassName('query')[0];
@@ -1694,7 +1690,6 @@ function join(chan) {
 		Array.from(document.getElementsByClassName('window')).forEach( closeAllWindows );
 		
 		doSend('part ' + chan);
-	
 	}
 	
 	Array.from(document.getElementsByClassName('chan_params')).forEach(function(item) {
@@ -1734,6 +1729,8 @@ function join(chan) {
 			}
 		}
 	}
+	
+	setTimeout(function() { scrollBottom(activeWindow) }, 150)
 }
 
 function query(nick, msg) {
@@ -1960,9 +1957,7 @@ function msg(raw) {
 	
 	let nicks = document.getElementsByClassName('nickname');
 	
-	if (nicks.length === 0 || nicks.length > 0 && nicks[nicks.length - 1].innerText !== nick) {
-		
-		console.log(nick);
+	//if (nicks.length === 0 || nicks.length > 0 && nicks[nicks.length - 1].innerText !== nick) {
 		
 		var line = document.createElement('div');
 		line.id = 'idmsg_' + idmsg;
@@ -1973,7 +1968,13 @@ function msg(raw) {
 		n.className = hlcolor + ' nickname';
 		n.innerText = nick;
 		line.appendChild(n);
-		line.innerHTML += ' - ' + lang_today + ' ' + currentTime();
+		line.innerHTML += '&nbsp;&nbsp;&nbsp;<span class="info"><i class="fa fa-info-circle" aria-hidden="true"></i></span>';
+		
+		let m = document.createElement('p')
+		
+		m.innerHTML = mht[1]
+		
+		line.appendChild(m);
 		
 		let line_for_log = document.createElement('div');
 		line_for_log.className = 'line log';
@@ -1983,22 +1984,21 @@ function msg(raw) {
 		n.className = hlcolor + ' nickname_old';
 		n.innerText = nick;
 		line_for_log.appendChild(n);
-		line_for_log.innerHTML += ' - ' + currentDate() + ' ' + lang_at_time + ' ' + currentTime();
+		line_for_log.innerHTML += '   ' + currentDate() + ' ' + lang_at_time + ' ' + currentTime();
 		
 		let newline_log = document.createElement('p');
 		newline_log.innerHTML += msg_for_log.replace('', '');
 		line_for_log.appendChild(newline_log);
 		
 		log(irc_server_address, '#' + chanlc, line_for_log.outerHTML);
-	}
+	//}
 	
 	if (w !== null) {
 		
-		console.log(line)
+		w.appendChild(line)
 		
+		/*
 		if (typeof(line) !== 'undefined') {
-			
-			w.appendChild(line);
 			
 			let last_msg = document.getElementById('idmsg_' + idmsg);
 			let newline = document.createElement('p');
@@ -2013,6 +2013,7 @@ function msg(raw) {
 			newline.innerHTML = msg.replace('', '');
 			last_msg.appendChild(newline);
 		}
+		*/
 		
 		mht[0].forEach(function(item) {
 			
@@ -2038,14 +2039,14 @@ function msg(raw) {
 				elem.className += ' green';
 			}
 		}
-		
-		scrollBottom(w);
 	}
 	
 	if (hlCheck) {
 		
 		hl(nick, msg);
 	}
+	
+	scrollBottom(w)
 }
 
 function scrollBottom(w) {
@@ -2748,8 +2749,6 @@ function onJoin(user, chan) {
 	}
 	
 	doSend('names ' + html_decode(chan));
-	
-	scrollBottom(w);
 }
 
 function onError(evt) {
@@ -2797,12 +2796,8 @@ function newsend(w, text, idmsg, recipient) {
 	line.className = 'line';
 
 	line.innerHTML = '';
-	if (nicks.length === 0) {
-		line.innerHTML = '<strong class="nickname">' + me + '</strong> - ' + lang_today + ' ' + currentTime();
-	}
-	else if (nicks[nicks.length - 1].innerText !== me) {
-		line.innerHTML = '<strong class="nickname">' + me + '</strong> - ' + lang_today + ' ' + currentTime();
-	}
+	
+	line.innerHTML = '<strong class="nickname">' + me + '</strong><span class="time">' + currentTime() + '</span>';
 
 	let mht = ht( message );
 
@@ -2816,7 +2811,7 @@ function newsend(w, text, idmsg, recipient) {
 	
 	line_for_log.innerHTML = '';
 	
-	line_for_log.innerHTML = '<strong class="nickname_old">' + me + '</strong> - ' + currentDate() + ' ' + lang_at_time + ' ' + currentTime();
+	line_for_log.innerHTML = '<strong class="nickname_old">' + me + '</strong>   ' + currentDate() + ' ' + lang_at_time + ' ' + currentTime();
 	
 	line_for_log.innerHTML += '<p>' + msg_for_log + '</p>';
 
@@ -2830,7 +2825,7 @@ function send() {
 	let recipient = active;
 	
 	if (text[0] == '/') {
-		exec( text.substring(1) );
+		exec( input.innerText );
 	}
 	else if (text) {
 		
@@ -3350,4 +3345,4 @@ function insertAfter(newNode, referenceNode) {
 	}
 }
 
-window.addEventListener("load", init, false);
+window.addEventListener("load", init, false)

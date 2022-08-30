@@ -45,7 +45,6 @@ if (lang == '' || lang === 'en') {
 	var lang_topic_view2 = 'Double-clic to reduct topic';
 	var lang_leave_warning = 'Do you really want to leave this page?';
 	var lang_at_time = 'at';
-	var lang_today = 'Today at';
 	var lang_cards = "Show profiles";
 	var lang_visio = "Video conference settings";
 	var lang_settings = "Settings and profile";
@@ -95,7 +94,6 @@ else if (lang === 'fr') {
 	var lang_topic_view2 = 'Double-clic pour réduire le sujet';
 	var lang_leave_warning = 'Êtes-vous sûr de vouloir quitter cette page ?';
 	var lang_at_time = 'à';
-	var lang_today = "Aujourd'hui à";
 	var lang_cards = "Afficher les profils";
 	var lang_visio = "Paramètres de video conference";
 	var lang_settings = "Paramètres et profil";
