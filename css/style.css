@@ -1,7 +1,19 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Oxygen+Mono');
 
-.line .emoji {	width:40px;	font-size:40px !important;}
-
+.line .emoji {
+	width:40px;
+	font-size:40px !important;
+}
+.info {
+	float:right;
+	margin:-8px;
+}
+.fa-info-circle {
+	cursor:pointer !important;
+}
+.time {
+	float:right;
+}
 html, body {
 	margin:0;
 	padding:0;
@@ -585,7 +597,7 @@ body #text .nocolorcopy {
 	padding:0;
 	font-weight:normal;
 	background-color:white;
-	border:5px solid gray;
+	border:2px solid lightgray;
     border-radius: 5px;
 }
 .nick_options li:first-child {
@@ -773,6 +785,7 @@ body #text .nocolorcopy {
 	background-color:white;
 	border-radius:10px;
 	max-width:500px;
+	min-width:120px;
 }
 .line p {
 	padding-top:5px;
