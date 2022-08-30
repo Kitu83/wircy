@@ -2825,7 +2825,7 @@ function send() {
 	let recipient = active;
 	
 	if (text[0] == '/') {
-		exec( input.innerText.substring(1) );
+		exec( input.textContent.substring(1) );
 	}
 	else if (text) {
 		
