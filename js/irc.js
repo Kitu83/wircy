@@ -123,16 +123,31 @@ function ht(msg) {
 		
 		if (word[0] === '#') {
 			
+			let point = ''
+			
 			if (word.substr(-1, 1) === '.') {
 				
 				word = word.substr(0, word.length - 1);
+				
+				point = '.'
 			}
 			
-			let chansp = word.substring(1);
+			let code = word.match(/(()|([0-9,]{0,5})|()|()|())/g)
+			
+			if (code === null) {
+				
+				code = ''
+			}
+			else {
+				
+				code = code.join('')
+			}
+			
+			let chansp = word.substring(1).replace(/[^ -~]+/g, "");
 			
 			chanht.push( 'ht_' + chansp );
 			
-			msg[index] = '<span id="ht_' + chansp + '" class="hashtag">' + word + '</span>'
+			msg[index] = '<span id="ht_' + chansp + '" class="hashtag">' + word.replace(/[^ -~]+/g, "") + '</span>' + point + code
 		}
 	});
 	
@@ -211,8 +226,6 @@ function autojoins() {
 			let list = getCookie('favlist');
 			
 			list = list.split(',');
-			
-			console.log(list)
 			
 			if (list.length == 1 && list[0] == '') {
 				
@@ -1109,13 +1122,13 @@ function onNotice(rawsp) { // :NickServ!services@services.wevox.co NOTICE WircyU
 		
 		let mht = ht( rawsp.splice(3).join(' ').substring(1) );
 		
-		let message = style(urlify( mht[1], idmsg, url_summary, false ));
+		let message = urlify( mht[1], idmsg, true, false );
 		
 		let msg_for_log = mht[1];
 		
 		message = twemoji.parse(message);
 		
-		url_summary = true;
+		message = style( message )
 		
 		elem.innerHTML = '<span style="color:#CE6F22;" class="nocolorcopy">&lt;' + currentTime() + '&gt; -' + nicksend.textContent + '- ' + message.replace('', '') + '</span>';
 		
@@ -1185,7 +1198,7 @@ function style(msg) {
 	
 	let res = msg.replace(/(()|([0-9,]{0,5})|()|()|())/g, function(match, string) {
 		
-		if (match === '') {
+		if (match === '') { // gras
 			
 			if (stx % 2 === 0) {
 				
@@ -1198,7 +1211,7 @@ function style(msg) {
 					style(closure);
 				}
 				
-				return '<span class="style_bold">';
+				return '<span style="font-weight:bold;">';
 			}
 			else {
 				
@@ -1243,8 +1256,6 @@ function style(msg) {
 			}
 		}
 		else if (match === '') { // testtest
-			
-			console.log('italic');
 			
 			if (gs % 2 === 0) {
 				
@@ -2825,6 +2836,7 @@ function send() {
 	let recipient = active;
 	
 	if (text[0] == '/') {
+		
 		exec( input.textContent.substring(1) );
 	}
 	else if (text) {
